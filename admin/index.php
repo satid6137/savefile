@@ -36,6 +36,18 @@ $stmt2->execute();
 $topics = $stmt2->fetchAll();
 
 $totalPages = ceil($totalTopics / $limit);
+
+// จำนวนแท็บที่ต้องการแสดง
+$window = 15;
+
+// คำนวณช่วงหน้า
+$start = max(1, $page - floor($window / 2));
+$end = min($totalPages, $start + $window - 1);
+
+// ถ้าช่วงท้ายไม่ถึง 10 หน้า ให้ขยับช่วงเริ่มต้น
+if (($end - $start + 1) < $window) {
+    $start = max(1, $end - $window + 1);
+}
 ?>
 <!DOCTYPE html>
 <html lang="th">
@@ -55,7 +67,7 @@ $totalPages = ceil($totalTopics / $limit);
 
     <nav class="topbar">
         <div class="topbar-brand">
-            <span class="dot">&#9679;</span> Hangchat Hospital Drive
+            <span class="dot">&#9679;</span> Hangchat Hospital Webboard/Drive
             <span class="topbar-badge">Admin</span>
         </div>
         <div class="topbar-actions">
@@ -198,34 +210,33 @@ $totalPages = ceil($totalTopics / $limit);
             <?php endif; ?>
 
             <!-- Pagination -->
-            <div class="pagination">
-                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                    <a href="?page=<?= $i ?>" class="page-btn <?= $i == $page ? 'active' : '' ?>">
-                        <?= $i ?>
-                    </a>
-                <?php endfor; ?>
+            <div class="tab-pagination">
+
+                <!-- เริ่มต้น -->
+                <a href="?page=1" class="tab-btn <?= $page == 1 ? 'disabled' : '' ?>">&laquo;</a>
+
+                <!-- ก่อนหน้า -->
+                <a href="?page=<?= max(1, $page - 1) ?>"
+                    class="tab-btn <?= $page == 1 ? 'disabled' : '' ?>">&lsaquo;</a>
+
+                <!-- ตัวเลข -->
+                <div class="tab-numbers">
+                    <?php for ($i = $start; $i <= $end; $i++): ?>
+                        <a href="?page=<?= $i ?>" class="tab-number <?= $i == $page ? 'active' : '' ?>">
+                            <?= $i ?>
+                        </a>
+                    <?php endfor; ?>
+                </div>
+
+                <!-- ถัดไป -->
+                <a href="?page=<?= min($totalPages, $page + 1) ?>"
+                    class="tab-btn <?= $page == $totalPages ? 'disabled' : '' ?>">&rsaquo;</a>
+
+                <!-- สุดท้าย -->
+                <a href="?page=<?= $totalPages ?>"
+                    class="tab-btn <?= $page == $totalPages ? 'disabled' : '' ?>">&raquo;</a>
+
             </div>
-
-            <style>
-                .pagination {
-                    margin-top: 15px;
-                    display: flex;
-                    gap: 6px;
-                }
-
-                .page-btn {
-                    padding: 6px 12px;
-                    background: #eee;
-                    border-radius: 6px;
-                    text-decoration: none;
-                    color: #333;
-                }
-
-                .page-btn.active {
-                    background: #007bff;
-                    color: white;
-                }
-            </style>
 
         </div>
 

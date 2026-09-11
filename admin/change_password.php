@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <nav class="topbar">
         <div class="topbar-brand">
-            <span class="dot">&#9679;</span> Hangchat Hospital Drive
+            <span class="dot">&#9679;</span> Hangchat Hospital Webboard/Drive
             <span class="topbar-badge">Admin</span>
         </div>
     </nav>
