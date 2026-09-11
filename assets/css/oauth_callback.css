@@ -1,0 +1,143 @@
+*,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            :root {
+                --bg: #f7f8fa;
+                --surface: #ffffff;
+                --border: #e8eaed;
+                --border-strong: #d1d5db;
+                --text: #1a1d23;
+                --text-muted: #6b7280;
+                --accent: #3b5bdb;
+                --danger: #991b1b;
+                --danger-soft: #fee2e2;
+                --radius: 10px;
+                --radius-sm: 6px;
+                --shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+            }
+
+            body {
+                font-family: 'Sarabun', sans-serif;
+                background: var(--bg);
+                color: var(--text);
+                font-size: 15px;
+                line-height: 1.6;
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 1.5rem;
+            }
+
+            .card {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                box-shadow: var(--shadow);
+                width: 100%;
+                max-width: 440px;
+                overflow: hidden;
+                text-align: center;
+            }
+
+            .card.wide {
+                max-width: 640px;
+                text-align: left;
+            }
+
+            .card-icon {
+                width: 56px;
+                height: 56px;
+                border-radius: 50%;
+                background: var(--danger-soft);
+                color: var(--danger);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 26px;
+                margin: 2rem auto 1rem;
+            }
+
+            .card.wide .card-icon {
+                margin-left: 1.75rem;
+            }
+
+            .card-body {
+                padding: 0 1.75rem 2rem;
+            }
+
+            .card.wide .card-body {
+                text-align: center;
+            }
+
+            .card-body h2 {
+                font-size: 17px;
+                font-weight: 600;
+                margin-bottom: .5rem;
+                color: var(--text);
+            }
+
+            .card-body p {
+                font-size: 14px;
+                color: var(--text-muted);
+            }
+
+            .debug-box {
+                margin: 0 1.75rem 1.5rem;
+                background: var(--bg);
+                border: 1px solid var(--border);
+                border-radius: var(--radius-sm);
+                padding: .85rem 1rem;
+                text-align: left;
+            }
+
+            .debug-box .debug-title {
+                font-size: 12px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: .04em;
+                color: var(--text-muted);
+                margin-bottom: .5rem;
+            }
+
+            .debug-box pre {
+                font-family: 'SFMono-Regular', Consolas, monospace;
+                font-size: 12.5px;
+                color: var(--text);
+                white-space: pre-wrap;
+                word-break: break-all;
+                max-height: 320px;
+                overflow: auto;
+            }
+
+            .card-footer {
+                padding: 1.1rem 1.75rem 1.75rem;
+                text-align: center;
+            }
+
+            .btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+                padding: .6rem 1.4rem;
+                border-radius: var(--radius-sm);
+                font-family: inherit;
+                font-size: 14px;
+                font-weight: 500;
+                cursor: pointer;
+                border: 1px solid var(--accent);
+                background: var(--accent);
+                color: #fff;
+                text-decoration: none;
+                transition: background .15s;
+            }
+
+            .btn:hover {
+                background: #2f4ac4;
+            }

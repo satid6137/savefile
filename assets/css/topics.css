@@ -1,0 +1,26 @@
+/* เฉพาะหน้า topics.php */
+.topics-page .group-block {
+    background: #ffffff;        /* สีพื้นหลังใหม่ */
+    border: 1px solid #e3e3e3;  /* ขอบบาง */
+    padding: 15px;              /* padding ใหม่ */
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.topics-page .group-title {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.topics-page .topic-actions {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 10px;
+    background: #fafafa;
+    border: 1px solid #e3e3e3;
+    border-radius: 8px;
+    margin-top: 10px;
+}
