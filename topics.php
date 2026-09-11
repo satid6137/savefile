@@ -146,11 +146,11 @@ function visThai($v)
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style_categories.css">
+
+    <link rel="stylesheet" href="assets/css/categories.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
@@ -256,6 +256,11 @@ function visThai($v)
                 <?php foreach ($topics as $t): ?>
 
                     <?php
+                    // นับจำนวนข้อความในเรื่องนี้
+                    $stmt2 = $pdo->prepare("SELECT COUNT(*) FROM paragraphs WHERE topic_id = ?");
+                    $stmt2->execute([$t['id']]);
+                    $paragraph_count = $stmt2->fetchColumn();
+
                     // visibility ของเรื่อง
                     $realVis = resolveVisibility($t['visibility'], $group['visibility'], $group['cat_visibility']);
 
@@ -315,8 +320,7 @@ function visThai($v)
                                             <?= htmlspecialchars($t['title']) ?>
                                         </a>
                                     <?php else: ?>
-                                        <a href="view_topic.php?id=<?= $t['id'] ?>"
-                                            style="font-weight:600; font-size:15px; text-decoration:none;">
+                                        <a href="view_topic.php?id=<?= $t['id'] ?>" class="topic-link">
                                             <?= htmlspecialchars($t['title']) ?>
                                         </a>
                                     <?php endif; ?>
@@ -345,7 +349,7 @@ function visThai($v)
                                         </a>
 
                                         <!-- ไอคอนลบ -->
-                                        <?php if ($uploaded_count == 0): ?>
+                                        <?php if ($paragraph_count == 0): ?>
                                             <form method="POST" action="delete_topic_safe.php"
                                                 onsubmit="return confirm('ต้องการลบเรื่องนี้?');" style="display:inline;">
                                                 <input type="hidden" name="topic_id" value="<?= $t['id'] ?>">

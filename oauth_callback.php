@@ -174,7 +174,7 @@ if (!$matchedOrg) {
 
 $hospcode = $matchedOrg['hcode'];
 
-// ---------- 5) หา / สร้างผู้ใช้ในระบบ — สิทธิ์เป็น 'user' เสมอ ----------
+// ---------- 5) หา / สร้างผู้ใช้ในระบบ — ผู้ใช้ใหม่เป็น user เสมอ ----------
 $providerUid = $profile['provider_id'] ?? $profile['account_id'] ?? null;
 if (!$providerUid) {
     oauth_fail('ไม่พบรหัสอ้างอิงผู้ใช้ (provider_id) ในโปรไฟล์ที่ได้รับ', $profile);
@@ -191,12 +191,13 @@ $stmt->execute([$providerUid]);
 $user = $stmt->fetch();
 
 if (!$user) {
+    // ผู้ใช้ใหม่ → role = user, status = 1
     $username = 'pid_' . $providerUid;
-    $randomPassword = password_hash(bin2hex(random_bytes(32)), PASSWORD_DEFAULT); // ไม่ใช้ล็อกอินด้วยรหัสผ่านนี้
+    $randomPassword = password_hash(bin2hex(random_bytes(32)), PASSWORD_DEFAULT);
 
     $stmt = $pdo->prepare("
-        INSERT INTO users (username, password, role, provider_uid, hospcode, display_name)
-        VALUES (?, ?, 'user', ?, ?, ?)
+        INSERT INTO users (username, password, role, provider_uid, hospcode, display_name, status)
+        VALUES (?, ?, 'user', ?, ?, ?, 1)
     ");
     $stmt->execute([$username, $randomPassword, $providerUid, $hospcode, $displayName]);
 
@@ -204,18 +205,23 @@ if (!$user) {
         'id' => $pdo->lastInsertId(),
         'username' => $username,
         'role' => 'user',
+        'status' => 1
     ];
+
 } else {
-    // อัปเดตข้อมูลล่าสุด และบังคับ role เป็น 'user' เสมอสำหรับบัญชีที่เข้าผ่าน Provider ID
-    $stmt = $pdo->prepare("UPDATE users SET hospcode = ?, display_name = ?, role = 'user' WHERE id = ?");
+    // ผู้ใช้เก่า → อัปเดตเฉพาะ hospcode + display_name
+    // ❗ ไม่แตะ role เดิม
+    // ❗ ไม่แตะ status เดิม
+    $stmt = $pdo->prepare("UPDATE users SET hospcode = ?, display_name = ? WHERE id = ?");
     $stmt->execute([$hospcode, $displayName, $user['id']]);
-    $user['role'] = 'user';
 }
 
+// เก็บ session โดยไม่แตะ role/status เดิม
 $_SESSION['user'] = [
     'id' => $user['id'],
     'username' => $user['username'],
-    'role' => 'user',
+    'role' => $user['role'],     // ใช้ค่าที่มีอยู่เดิม
+    'status' => $user['status'], // ใช้ค่าที่มีอยู่เดิม
 ];
 
 header("Location: $redirectTo");

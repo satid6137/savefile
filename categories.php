@@ -61,7 +61,7 @@ foreach ($categories as $index => $cat) {
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="assets/css/categories.css">
@@ -205,8 +205,7 @@ foreach ($categories as $index => $cat) {
 
                                 <!-- ซ้าย: ชื่อหัวข้อ + จำนวนเรื่อง + สิทธิ์ -->
                                 <div>
-                                    <a href="topics.php?group=<?= $g['id'] ?>"
-                                        style="font-weight:600; font-size:15px; text-decoration:none;">
+                                    <a href="topics.php?group=<?= $g['id'] ?>" class="topic-link">
                                         <?= htmlspecialchars($g['name']) ?> (<?= $topicCount ?> เรื่อง)
                                     </a>
 
